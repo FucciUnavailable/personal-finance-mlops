@@ -1,12 +1,39 @@
-# Python-generated files
+# Python
 __pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+env/
+venv/
 
-# Virtual environments
-.venv
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
 
-*env*
+# Data (don't commit raw data)
+data/raw/*
+data/processed/*
+
+# Keep directory structure but ignore contents
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Models (will version separately with MLflow/DVC)
+models/*.pkl
+models/*.joblib
+mlruns/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Docker
+.dockerignore
+
+# Environment
+.env
