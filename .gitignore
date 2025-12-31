@@ -39,3 +39,17 @@ mlruns/
 .env
 mlflow.db
 mlruns/
+
+# MLflow
+mlflow.db
+mlruns/
+mlartifacts/
+
+# Models
+models/*.pkl
+models/*.joblib
+
+# Data
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
