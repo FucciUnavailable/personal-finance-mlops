@@ -5,7 +5,13 @@ services:
       - "8888:8888"
     volumes:
       - .:/app
-      - ~/.kaggle:/root/.kaggle:ro  #mount kaggle credentials
-    environment:
-      - JUPYTER_ENABLE_LAB=yes
+      - ~/.kaggle:/root/.kaggle:ro
     command: uv run jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='' --NotebookApp.password=''
+
+  train:
+    build: .
+    volumes:
+      - .:/app
+    command: uv run python src/train.py
+    profiles:
+      - training
