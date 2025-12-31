@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import joblib
 import numpy as np
@@ -25,7 +26,7 @@ class PredictionResponse(BaseModel):
 
 @app.get("/")
 def root():
-    return {"message": "Personal Finance Savings Predictor API", "status": "running"}
+    return FileResponse("src/static/index.html")
 
 @app.get("/health")
 def health():

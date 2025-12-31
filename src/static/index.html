@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Savings Predictor</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 50px auto; padding: 20px; }
+        input { width: 100%; padding: 8px; margin: 5px 0; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .result { margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 5px; }
+        .error { background: #ffcccc; }
+    </style>
+</head>
+<body>
+    <h1>💰 Monthly Savings Predictor</h1>
+
+    <form id="predictForm">
+        <label>Monthly Income ($):</label>
+        <input type="number" id="income" value="5000" required>
+
+        <label>Total Expenses ($):</label>
+        <input type="number" id="total_expenses" value="3500" required>
+
+        <label>Number of Transactions:</label>
+        <input type="number" id="num_transactions" value="45" required>
+
+        <label>Groceries ($):</label>
+        <input type="number" id="groceries" value="400" required>
+
+        <label>Restaurants ($):</label>
+        <input type="number" id="restaurants" value="250" required>
+
+        <label>Utilities ($):</label>
+        <input type="number" id="utilities" value="200" required>
+
+        <label>Shopping ($):</label>
+        <input type="number" id="shopping" value="150" required>
+
+        <label>Mortgage/Rent ($):</label>
+        <input type="number" id="mortgage" value="1200" required>
+
+        <button type="submit">Predict Savings</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('predictForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                income: parseFloat(document.getElementById('income').value),
+                total_expenses: parseFloat(document.getElementById('total_expenses').value),
+                num_transactions: parseInt(document.getElementById('num_transactions').value),
+                groceries: parseFloat(document.getElementById('groceries').value),
+                restaurants: parseFloat(document.getElementById('restaurants').value),
+                utilities: parseFloat(document.getElementById('utilities').value),
+                shopping: parseFloat(document.getElementById('shopping').value),
+                mortgage: parseFloat(document.getElementById('mortgage').value)
+            };
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                document.getElementById('result').innerHTML = `
+                    <div class="result">
+                        <h3>📊 Prediction Results</h3>
+                        <p><strong>Predicted Savings:</strong> $${result.predicted_savings.toFixed(2)}</p>
+                        <p><strong>Savings Rate:</strong> ${((result.predicted_savings / data.income) * 100).toFixed(1)}%</p>
+                        <p><strong>Recommendation:</strong> ${result.recommendation}</p>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `
+                    <div class="result error">
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
